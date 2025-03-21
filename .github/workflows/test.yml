@@ -27,15 +27,15 @@ jobs:
         shell: bash
         run: |
           branch=${GITHUB_REF#refs/heads/}
-          echo "::set-output name=branch::${branch}"
+          echo "branch=${branch}" >> $GITHUB_OUTPUT
           echo "branch: ${branch}"
           declare -A branchToEnv
           branchToEnv[master]="production"
           enviroment=${branchToEnv[${branch}]:-$branch}
-          echo "::set-output name=enviroment::${enviroment}"
+          echo "enviroment=${enviroment}" >> $GITHUB_OUTPUT
           echo "environment: ${enviroment}"
-          echo "::set-output name=secret_name::${branch^^}"
-          echo "secret: ${{ secrets['MASTER'] }}"
+          echo "secret_name=${branch^^}" >> $GITHUB_OUTPUT
+          echo "secret: ${{ secrets.MASTER }}"
       - name: Read Secret
         id: read_secret
         shell: bash
